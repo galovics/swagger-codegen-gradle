@@ -59,7 +59,7 @@ project("${rootProject.appName}-server") {
             config.setLang("spring")
             config.setApiPackage(rootProject.apiPackage)
             config.setModelPackage(rootProject.modelPackage)
-            config.setInputSpec(rootProject.swaggerFile)
+            config.setInputSpec(rootProject.swaggerFile.toString())
             config.setOutputDir(project.buildDir.toString())
             config.setAdditionalProperties([
                     'dateLibrary'     : 'java8',
