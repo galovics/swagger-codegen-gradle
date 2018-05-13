@@ -66,7 +66,8 @@ project("${rootProject.appName}-server") {
             config.setAdditionalProperties([
                     'dateLibrary'     : 'java8',
                     'useTags'         : 'true',
-                    'delegatePattern' : 'true'
+                    'delegatePattern' : 'true',
+                    'responseEntity'  : false,
             ])
             new DefaultGenerator().opts(config.toClientOptInput()).generate()
         }

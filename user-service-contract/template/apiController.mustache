@@ -54,7 +54,7 @@ public class {{classname}}Controller implements {{classname}} {
     }
 {{/isDelegate}}
 {{#operation}}
-    public ResponseEntity<{{>returnTypes}}> {{operationId}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}},{{/hasMore}}{{/allParams}}) {
+    public {{#responseEntity}}ResponseEntity<{{/responseEntity}}{{>returnTypes}}{{#responseEntity}}>{{/responseEntity}} {{operationId}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}},{{/hasMore}}{{/allParams}}) {
         {{#isDelegate}}
         return delegate.{{operationId}}({{#allParams}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
         {{/isDelegate}}
