@@ -1,0 +1,9 @@
+def name = 'user-service'
+def rootName = "${name}-contract"
+def serverName = "${name}-server"
+
+rootProject.name = rootName
+
+file(serverName).mkdir()
+
+include serverName

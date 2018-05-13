@@ -1,0 +1,74 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("io.swagger:swagger-codegen:2.3.1")
+    }
+}
+
+apply plugin: 'base'
+
+group = 'com.arnoldgalovics.blog'
+
+import io.swagger.codegen.DefaultGenerator
+import io.swagger.codegen.config.CodegenConfigurator
+
+subprojects {
+    repositories {
+        mavenCentral()
+    }
+
+    apply plugin: 'java'
+    apply plugin: 'maven'
+
+    group = 'com.arnoldgalovics.blog'
+    version = '0.0.1-SNAPSHOT'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    compileJava.options.fork = true
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+
+    sourceSets {
+        main {
+            java {
+                srcDir "${project.buildDir}/src/main/java"
+            }
+        }
+    }
+}
+
+ext.appName      = 'user-service'
+ext.apiPackage   = 'com.arnoldgalovics.blog.api'
+ext.modelPackage = 'com.arnoldgalovics.blog.model'
+ext.swaggerFile  = "${rootDir}/api/swagger.yml"
+
+project("${rootProject.appName}-server") {
+
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-web:1.5.9.RELEASE')
+        compile('io.springfox:springfox-swagger2:2.7.0')
+        compile('io.springfox:springfox-swagger-ui:2.7.0')
+    }
+
+    task generateServer {
+        doLast {
+            def config = new CodegenConfigurator()
+            config.setLang("spring")
+            config.setApiPackage(rootProject.apiPackage)
+            config.setModelPackage(rootProject.modelPackage)
+            config.setInputSpec(rootProject.swaggerFile)
+            config.setOutputDir(project.buildDir.toString())
+            config.setAdditionalProperties([
+                    'dateLibrary'     : 'java8',
+                    'useTags'         : 'true',
+                    'interfaceOnly'   : 'true'
+            ])
+            new DefaultGenerator().opts(config.toClientOptInput()).generate()
+        }
+    }
+
+    compileJava.dependsOn('generateServer')
+}
