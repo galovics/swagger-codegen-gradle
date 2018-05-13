@@ -30,7 +30,8 @@ ext {
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.cloud:spring-cloud-starter-eureka')
-    compile('com.arnoldgalovics.blog:user-service-server:0.0.1-SNAPSHOT')
+    compile('org.springframework.cloud:spring-cloud-starter-feign')
+    compile('com.arnoldgalovics.blog:user-service-client:0.0.1-SNAPSHOT')
 }
 
 dependencyManagement {

@@ -75,3 +75,38 @@ project("${rootProject.appName}-server") {
 
     compileJava.dependsOn('generateServer')
 }
+
+project("${rootProject.appName}-client") {
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-web:1.5.13.RELEASE')
+        compile('org.springframework.cloud:spring-cloud-starter-feign:1.4.0.RELEASE')
+        compile('io.springfox:springfox-swagger2:2.7.0')
+        compile('io.springfox:springfox-swagger-ui:2.7.0')
+    }
+
+    task generateClient {
+        doLast {
+            def config = new CodegenConfigurator()
+            config.setLang("spring")
+            config.setLibrary('spring-cloud')
+            config.setApiPackage(rootProject.apiPackage)
+            config.setModelPackage(rootProject.modelPackage)
+            config.setInputSpec(rootProject.swaggerFile.toString())
+            config.setTemplateDir(rootProject.templateDir.toString())
+            config.setOutputDir(project.buildDir.toString())
+            config.setAdditionalProperties([
+                    'dateLibrary'  : 'java8',
+                    'title'        :  rootProject.appName,
+                    'useTags'      : 'true'
+            ])
+            new DefaultGenerator().opts(config.toClientOptInput()).generate()
+        }
+    }
+
+    task deleteNonClientRelatedClasses(dependsOn: 'generateClient') {
+        doLast {
+            delete "${project.buildDir}/src/main/java/io"
+        }
+    }
+    compileJava.dependsOn('deleteNonClientRelatedClasses')
+}
