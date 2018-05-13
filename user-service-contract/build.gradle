@@ -41,9 +41,10 @@ subprojects {
 }
 
 ext.appName      = 'user-service'
-ext.apiPackage   = 'com.arnoldgalovics.blog.api'
-ext.modelPackage = 'com.arnoldgalovics.blog.model'
+ext.apiPackage   = 'com.arnoldgalovics.blog.userservice.api'
+ext.modelPackage = 'com.arnoldgalovics.blog.userservice.model'
 ext.swaggerFile  = "${rootDir}/api/swagger.yml"
+ext.templateDir  = "${rootDir}/template"
 
 project("${rootProject.appName}-server") {
 
@@ -60,11 +61,12 @@ project("${rootProject.appName}-server") {
             config.setApiPackage(rootProject.apiPackage)
             config.setModelPackage(rootProject.modelPackage)
             config.setInputSpec(rootProject.swaggerFile.toString())
+            config.setTemplateDir(rootProject.templateDir.toString())
             config.setOutputDir(project.buildDir.toString())
             config.setAdditionalProperties([
                     'dateLibrary'     : 'java8',
                     'useTags'         : 'true',
-                    'interfaceOnly'   : 'true'
+                    'delegatePattern' : 'true'
             ])
             new DefaultGenerator().opts(config.toClientOptInput()).generate()
         }

@@ -1,13 +1,13 @@
 package com.arnoldgalovics.blog.userservice;
 
-import com.arnoldgalovics.blog.api.UserApi;
-import com.arnoldgalovics.blog.model.ListUserResponse;
-import com.arnoldgalovics.blog.model.UserCreateRequest;
+import com.arnoldgalovics.blog.userservice.api.UserApiDelegate;
+import com.arnoldgalovics.blog.userservice.model.ListUserResponse;
+import com.arnoldgalovics.blog.userservice.model.UserCreateRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
-@Controller
-public class UserController implements UserApi {
+@Component
+public class UserDelegateImpl implements UserApiDelegate {
     @Override
     public ResponseEntity<Void> createUser(UserCreateRequest user) {
         // TODO: implementation
