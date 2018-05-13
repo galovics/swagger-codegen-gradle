@@ -21,32 +21,3 @@ public class PaymentServiceApplication {
     }
 }
 
-@RestController("/payment")
-class PaymentController {
-    private UserApiClient userApiClient;
-
-    public PaymentController(UserApiClient userApiClient) {
-        this.userApiClient = userApiClient;
-    }
-
-    @GetMapping
-    public ListPayingUserResponse getPayingUsers() {
-        return new ListPayingUserResponse(userApiClient.getUsers().stream().map(UserResponse::getName).collect(Collectors.toList()));
-    }
-}
-
-class ListPayingUserResponse {
-    private List<String> names;
-
-    public ListPayingUserResponse(List<String> names) {
-        this.names = names;
-    }
-
-    public List<String> getNames() {
-        return names;
-    }
-
-    public void setNames(List<String> names) {
-        this.names = names;
-    }
-}
