@@ -29,8 +29,13 @@ subprojects {
     targetCompatibility = 1.8
 
     compileJava.options.fork = true
+
+    /* Setting the build directory of the subproject
+       to user-service-contract/build/[projectName]
+     */
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 
+    // Source folder is now different as the build directory is set to a custom path
     sourceSets {
         main {
             java {
@@ -39,6 +44,7 @@ subprojects {
         }
     }
 
+    // This is just for generating the source jar
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allSource
@@ -53,69 +59,36 @@ ext.appName      = 'user-service'
 ext.apiPackage   = 'com.arnoldgalovics.blog.userservice.api'
 ext.modelPackage = 'com.arnoldgalovics.blog.userservice.model'
 ext.swaggerFile  = "${rootDir}/api/swagger.yml"
-ext.templateDir  = "${rootDir}/template"
 
-project("${rootProject.appName}-server") {
+project("${rootProject.appName}-server") { // user-service-server
 
+    // Dependencies for the generated sources
     dependencies {
         compile('org.springframework.boot:spring-boot-starter-web:1.5.9.RELEASE')
         compile('io.springfox:springfox-swagger2:2.7.0')
-        compile('io.springfox:springfox-swagger-ui:2.7.0')
     }
 
+    // Actual task for generating the server
     task generateServer {
         doLast {
             def config = new CodegenConfigurator()
             config.setLang("spring")
-            config.setApiPackage(rootProject.apiPackage)
-            config.setModelPackage(rootProject.modelPackage)
-            config.setInputSpec(rootProject.swaggerFile.toString())
-            config.setTemplateDir(rootProject.templateDir.toString())
-            config.setOutputDir(project.buildDir.toString())
+            config.setApiPackage(rootProject.apiPackage)            // Package to be used for the API interfaces
+            config.setModelPackage(rootProject.modelPackage)        // Package to be used for the API models
+            config.setInputSpec(rootProject.swaggerFile.toString()) // The swagger API file
+            config.setOutputDir(project.buildDir.toString())        // The output directory, user-service-contract/build/user-service-server/
             config.setAdditionalProperties([
-                    'dateLibrary'     : 'java8',
-                    'useTags'         : 'true',
-                    'delegatePattern' : 'true',
-                    'responseEntity'  : false,
+                    'dateLibrary'     : 'java8', // Date library to use
+                    'useTags'         : 'true',  // Use tags for the naming
+                    'interfaceOnly'   : 'true'   // Generating the Controller API interface and the models only
             ])
-            new DefaultGenerator().opts(config.toClientOptInput()).generate()
+            new DefaultGenerator().opts(config.toClientOptInput()).generate() // Executing the generation
         }
     }
 
+    /* Defining the order of the tasks and the dependency between them.
+       As this is a Java project, it will execute the generateServer task first,
+       then the compilation of the generated files.
+     */
     compileJava.dependsOn('generateServer')
-}
-
-project("${rootProject.appName}-client") {
-    dependencies {
-        compile('org.springframework.boot:spring-boot-starter-web:1.5.13.RELEASE')
-        compile('org.springframework.cloud:spring-cloud-starter-feign:1.4.0.RELEASE')
-        compile('io.springfox:springfox-swagger2:2.7.0')
-        compile('io.springfox:springfox-swagger-ui:2.7.0')
-    }
-
-    task generateClient {
-        doLast {
-            def config = new CodegenConfigurator()
-            config.setLang("spring")
-            config.setLibrary('spring-cloud')
-            config.setApiPackage(rootProject.apiPackage)
-            config.setModelPackage(rootProject.modelPackage)
-            config.setInputSpec(rootProject.swaggerFile.toString())
-            config.setTemplateDir(rootProject.templateDir.toString())
-            config.setOutputDir(project.buildDir.toString())
-            config.setAdditionalProperties([
-                    'dateLibrary'  : 'java8',
-                    'title'        :  rootProject.appName,
-                    'useTags'      : 'true'
-            ])
-            new DefaultGenerator().opts(config.toClientOptInput()).generate()
-        }
-    }
-
-    task deleteNonClientRelatedClasses(dependsOn: 'generateClient') {
-        doLast {
-            delete "${project.buildDir}/src/main/java/io"
-        }
-    }
-    compileJava.dependsOn('deleteNonClientRelatedClasses')
 }

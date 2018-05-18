@@ -4,8 +4,3 @@ spring:
 
 server:
   port: 8002
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8000/eureka/

@@ -19,22 +19,11 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-    mavenLocal()
+    mavenLocal()   // Use maven local as the artifacts were deployed there
     mavenCentral()
-}
-
-ext {
-    springCloudVersion = 'Edgware.SR3'
 }
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.cloud:spring-cloud-starter-eureka')
-    compile('com.arnoldgalovics.blog:user-service-server:0.0.1-SNAPSHOT')
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
+    compile('com.arnoldgalovics.blog:user-service-server:0.0.1-SNAPSHOT') // Generated artifacts
 }

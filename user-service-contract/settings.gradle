@@ -1,12 +1,9 @@
 def name = 'user-service'
 def rootName = "${name}-contract"
 def serverName = "${name}-server"
-def clientName = "${name}-client"
 
 rootProject.name = rootName
 
 file(serverName).mkdir()
-file(clientName).mkdir()
 
 include serverName
-include clientName
