@@ -59,6 +59,7 @@ ext.appName      = 'user-service'
 ext.apiPackage   = 'com.arnoldgalovics.blog.userservice.api'
 ext.modelPackage = 'com.arnoldgalovics.blog.userservice.model'
 ext.swaggerFile  = "${rootDir}/api/swagger.yml"
+ext.templateDir  = "${rootDir}/template"
 
 project("${rootProject.appName}-server") { // user-service-server
 
@@ -77,10 +78,11 @@ project("${rootProject.appName}-server") { // user-service-server
             config.setModelPackage(rootProject.modelPackage)        // Package to be used for the API models
             config.setInputSpec(rootProject.swaggerFile.toString()) // The swagger API file
             config.setOutputDir(project.buildDir.toString())        // The output directory, user-service-contract/build/user-service-server/
+            config.setTemplateDir(rootProject.templateDir)          // The directory where the templates are located
             config.setAdditionalProperties([
                     'dateLibrary'     : 'java8', // Date library to use
                     'useTags'         : 'true',  // Use tags for the naming
-                    'interfaceOnly'   : 'true'   // Generating the Controller API interface and the models only
+                    'delegatePattern' : 'true'   // Generating the code with the delegate pattern
             ])
             new DefaultGenerator().opts(config.toClientOptInput()).generate() // Executing the generation
         }
