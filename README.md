@@ -2,7 +2,7 @@
 ## Introduction
 The project shows an example how you can use Swagger Codegen in a Gradle environment 
 to generate code from the contract. There is also a related article with more details:
-{insert article link here}
+https://blog.arnoldgalovics.com/series/swagger-codegen-with-gradle/
 
 ## Structure
 There are 2 main projects, there is one for the code generation called ```user-service-contract```
