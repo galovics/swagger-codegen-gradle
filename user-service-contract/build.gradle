@@ -94,3 +94,40 @@ project("${rootProject.appName}-server") { // user-service-server
      */
     compileJava.dependsOn('generateServer')
 }
+
+project("${rootProject.appName}-feign-client") { // user-service-feign-client
+    // Dependencies for the generated sources
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-web:1.5.13.RELEASE')
+        compile('org.springframework.cloud:spring-cloud-starter-feign:1.4.0.RELEASE')
+        compile('io.springfox:springfox-swagger2:2.7.0')
+    }
+
+    // Actual task for generating the Feign client
+    task generateClient {
+        doLast {
+            def config = new CodegenConfigurator()
+            config.setLang("spring")
+            config.setLibrary('spring-cloud')
+            config.setApiPackage(rootProject.apiPackage)            // Package to be used for the API interfaces
+            config.setModelPackage(rootProject.modelPackage)        // Package to be used for the API models
+            config.setInputSpec(rootProject.swaggerFile.toString()) // The swagger API file
+            config.setOutputDir(project.buildDir.toString())        // The output directory, user-service-contract/build/user-service-feign-client/
+            config.setTemplateDir(rootProject.templateDir)          // The directory where the templates are located
+            config.setAdditionalProperties([
+                    'dateLibrary'  : 'java8',
+                    'title'        :  rootProject.appName,
+                    'useTags'      : 'true'
+            ])
+            new DefaultGenerator().opts(config.toClientOptInput()).generate()
+        }
+    }
+
+    // Task for deleting the unnecessary configuration
+    task deleteNonClientRelatedClasses(dependsOn: 'generateClient') {
+        doLast {
+            delete "${project.buildDir}/src/main/java/io"
+        }
+    }
+    compileJava.dependsOn('deleteNonClientRelatedClasses')
+}

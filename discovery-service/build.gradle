@@ -19,18 +19,17 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-    mavenLocal()   // Use maven local as the artifacts were deployed there
     mavenCentral()
 }
+
 
 ext {
     springCloudVersion = 'Edgware.SR3'
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.cloud:spring-cloud-starter-eureka')
-    compile('com.arnoldgalovics.blog:user-service-server:0.0.1-SNAPSHOT')
+    compile('org.springframework.cloud:spring-cloud-starter-eureka-server')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
 dependencyManagement {
