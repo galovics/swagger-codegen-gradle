@@ -17,7 +17,7 @@ class PaymentController {
 
     @GetMapping
     public ListPayingUserResponse getPayingUsers() {
-        return new ListPayingUserResponse(userApiClient.getUsers().getBody().stream().map(UserResponse::getName).collect(Collectors.toList()));
+        return new ListPayingUserResponse(userApiClient.getUsers().stream().map(UserResponse::getName).collect(Collectors.toList()));
     }
 }
 

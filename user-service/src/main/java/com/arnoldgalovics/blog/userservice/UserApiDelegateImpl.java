@@ -16,9 +16,9 @@ public class UserApiDelegateImpl implements UserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<ListUserResponse> getUsers() {
+    public ListUserResponse getUsers() {
         ListUserResponse response = new ListUserResponse();
         response.add(new UserResponse().name("Arnold").id(1));
-        return ResponseEntity.ok(response);
+        return response;
     }
 }

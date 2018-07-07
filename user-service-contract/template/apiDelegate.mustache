@@ -24,7 +24,7 @@ public interface {{classname}}Delegate {
     /**
      * @see {{classname}}#{{operationId}}
      */
-    ResponseEntity<{{>returnTypes}}> {{operationId}}({{#allParams}}{{^isFile}}{{{dataType}}}{{/isFile}}{{#isFile}}MultipartFile{{/isFile}} {{paramName}}{{#hasMore}},{{/hasMore}}{{/allParams}});
+    {{#vendorExtensions.x-responseEntity}}ResponseEntity<{{>returnTypes}}>{{/vendorExtensions.x-responseEntity}}{{^vendorExtensions.x-responseEntity}}{{>returnTypes}}{{/vendorExtensions.x-responseEntity}} {{operationId}}({{#allParams}}{{^isFile}}{{{dataType}}}{{/isFile}}{{#isFile}}MultipartFile{{/isFile}} {{paramName}}{{#hasMore}},{{/hasMore}}{{/allParams}});
 
 {{/operation}}
 }

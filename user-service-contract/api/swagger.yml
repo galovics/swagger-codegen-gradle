@@ -27,6 +27,7 @@ paths:
         - "user"
       summary: "Creates a new user"
       operationId: "createUser"
+      x-responseEntity: true
       consumes:
       - "application/json"
       produces:

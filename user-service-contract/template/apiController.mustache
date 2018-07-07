@@ -27,6 +27,7 @@ import java.util.List;
 @RestController
 {{#operations}}
 public class {{classname}}Controller implements {{classname}} {
+
     private final {{classname}}Delegate delegate;
 
     @Autowired
@@ -35,7 +36,7 @@ public class {{classname}}Controller implements {{classname}} {
     }
 
 {{#operation}}
-    public ResponseEntity<{{>returnTypes}}> {{operationId}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}},{{/hasMore}}{{/allParams}}) {
+    public {{#vendorExtensions.x-responseEntity}}ResponseEntity<{{>returnTypes}}>{{/vendorExtensions.x-responseEntity}}{{^vendorExtensions.x-responseEntity}}{{>returnTypes}}{{/vendorExtensions.x-responseEntity}} {{operationId}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}},{{/hasMore}}{{/allParams}}) {
         return delegate.{{operationId}}({{#allParams}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
     }
 
