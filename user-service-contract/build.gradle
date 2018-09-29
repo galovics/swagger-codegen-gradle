@@ -1,9 +1,10 @@
 buildscript {
     repositories {
+        mavenLocal()
         mavenCentral()
     }
     dependencies {
-        classpath("io.swagger:swagger-codegen:2.3.1")
+        classpath("com.arnoldgalovics.blog:custom-swagger-codegen:0.0.1-SNAPSHOT")
     }
 }
 
@@ -107,7 +108,7 @@ project("${rootProject.appName}-feign-client") { // user-service-feign-client
     task generateClient {
         doLast {
             def config = new CodegenConfigurator()
-            config.setLang("spring")
+            config.setLang("custom")
             config.setLibrary('spring-cloud')
             config.setApiPackage(rootProject.apiPackage)            // Package to be used for the API interfaces
             config.setModelPackage(rootProject.modelPackage)        // Package to be used for the API models
