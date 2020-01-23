@@ -58,7 +58,8 @@ subprojects {
 ext.appName      = 'user-service'
 ext.apiPackage   = 'com.arnoldgalovics.blog.userservice.api'
 ext.modelPackage = 'com.arnoldgalovics.blog.userservice.model'
-ext.swaggerFile  = "${rootDir}/api/swagger.yml"
+//ext.swaggerFile  = "${rootDir}/api/swagger.yml"
+ext.swaggerFile  = "${rootDir}/api/simple-inventory.yaml"
 
 project("${rootProject.appName}-server") { // user-service-server
 
